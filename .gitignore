@@ -24,5 +24,4 @@ lerna-debug.log*
 .tmp
 
 # Docker
-docker-compose.yml
-msql_data/
+mysql_data/
