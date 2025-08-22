@@ -3,7 +3,7 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
 @Injectable()
 export class DatabaseConnectionService implements TypeOrmOptionsFactory {
-  createTypeOrmOptions(): Promise<TypeOrmModuleOptions> | TypeOrmModuleOptions {
+  createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       name: 'blogapi',
       type: 'mysql',
@@ -15,7 +15,7 @@ export class DatabaseConnectionService implements TypeOrmOptionsFactory {
       synchronize: true,
       logging: true,
       dropSchema: false,
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
     };
   }
 }
