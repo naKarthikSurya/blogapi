@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
   IsEmail,
   IsNotEmpty,
@@ -24,5 +23,9 @@ export class RegisterDto extends LoginDto {
   @IsNotEmpty()
   @MinLength(6)
   @MaxLength(12)
+  username: string;
+}
+
+export interface AuthPayload {
   username: string;
 }
