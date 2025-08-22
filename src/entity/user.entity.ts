@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 import { IsEmail } from 'class-validator';
-import { Exclude, instanceToPlain } from 'class-transformer';
+import { classToPlain, Exclude } from 'class-transformer';
 import * as bcrypt from 'bcryptjs';
 
 @Entity('users')
@@ -20,7 +20,7 @@ export class UserEntity extends AbstractEntity {
   image: string | null;
 
   @Column()
-  @Exclude({ toPlainOnly: true })
+  @Exclude()
   password: string;
 
   // TODO: add following
@@ -35,6 +35,6 @@ export class UserEntity extends AbstractEntity {
   }
 
   toJSON() {
-    return instanceToPlain(this);
+    return classToPlain(this);
   }
 }
