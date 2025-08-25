@@ -1,6 +1,7 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -24,6 +25,18 @@ export class RegisterDto extends LoginDto {
   @MinLength(6)
   @MaxLength(12)
   username: string;
+}
+
+export class UpdateUserDto {
+  @IsEmail()
+  @IsOptional()
+  email: string;
+
+  @IsOptional()
+  bio: string;
+  
+  @IsOptional()
+  image: string;
 }
 
 export interface AuthPayload {
