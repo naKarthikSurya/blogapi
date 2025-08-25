@@ -1,8 +1,10 @@
-import { BeforeInsert, Column, Entity } from 'typeorm';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { BeforeInsert, Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { AbstractEntity } from './abstract.entity';
 import { IsEmail } from 'class-validator';
 import { classToPlain, Exclude } from 'class-transformer';
 import * as bcrypt from 'bcryptjs';
+import { profile } from 'console';
 
 @Entity('users')
 export class UserEntity extends AbstractEntity {
@@ -23,7 +25,12 @@ export class UserEntity extends AbstractEntity {
   @Exclude()
   password: string;
 
-  // TODO: add following
+  @ManyToMany((type) => UserEntity, (user) => user.following)
+  @JoinTable()
+  followers: UserEntity[];
+
+  @ManyToMany((type) => UserEntity, (user) => user.followers)
+  following: UserEntity[];
 
   @BeforeInsert()
   async hashPassword() {
@@ -36,5 +43,12 @@ export class UserEntity extends AbstractEntity {
 
   toJSON() {
     return classToPlain(this);
+  }
+
+  toProfile(user: UserEntity) {
+    const following = this.followers.includes(user);
+    const profile = this.toJSON();
+    delete profile.followers;
+    return { ...profile, following };
   }
 }
