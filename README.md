@@ -21,78 +21,305 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Blog API
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A robust RESTful API for blog management built with NestJS, featuring user authentication, profile management, and secure endpoints.
 
-## Project setup
+## 🚀 Features
 
-```bash
-$ npm install
-```
+- **User Authentication**: JWT-based authentication with registration and login
+- **User Profile Management**: Update user profiles with validation
+- **Database Integration**: MySQL database with TypeORM
+- **Security**: Password hashing with bcrypt, JWT tokens
+- **Validation**: Request validation using class-validator
+- **Docker Support**: Easy deployment with Docker Compose
+- **Environment Configuration**: Flexible configuration management
 
-## Compile and run the project
+## 🛠️ Tech Stack
 
-```bash
-# development
-$ npm run start
+- **Framework**: [NestJS](https://nestjs.com/) - Progressive Node.js framework
+- **Database**: MySQL 8.0 with TypeORM
+- **Authentication**: JWT with Passport.js
+- **Password Hashing**: bcryptjs
+- **Validation**: class-validator & class-transformer
+- **Containerization**: Docker & Docker Compose
+- **Language**: TypeScript
 
-# watch mode
-$ npm run start:dev
+## 📋 Prerequisites
 
-# production mode
-$ npm run start:prod
-```
+- Node.js (v18 or higher)
+- npm or yarn
+- Docker and Docker Compose (for database)
+- MySQL (if running locally without Docker)
 
-## Run tests
+## 🚀 Quick Start
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 1. Clone the Repository
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+git clone <repository-url>
+cd blogapi
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 2. Environment Setup
 
-## Resources
+Create a `.env` file in the root directory:
 
-Check out a few resources that may come in handy when working with NestJS:
+```env
+# Database Configuration
+MYSQL_ROOT_PASSWORD=your_root_password
+MYSQL_DATABASE=blog_api
+MYSQL_USER=blog_user
+MYSQL_PASSWORD=your_password
+MYSQL_PORT=3306
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# JWT Configuration
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=24h
 
-## Support
+# Application Configuration
+PORT=4000
+NODE_ENV=development
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 3. Install Dependencies
 
-## Stay in touch
+```bash
+npm install
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 4. Start the Database
 
-## License
+Using Docker Compose (recommended):
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+docker-compose up -d
+```
+
+Or start MySQL manually if you have it installed locally.
+
+### 5. Run the Application
+
+```bash
+# Development mode
+npm run start:dev
+
+# Production mode
+npm run start:prod
+```
+
+The API will be available at `http://localhost:4000/api`
+
+## 📚 API Documentation
+
+### Base URL
+```
+http://localhost:4000/api
+```
+
+### Authentication Endpoints
+
+#### Register User
+```http
+POST /users
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "securepassword123"
+}
+```
+
+#### Login User
+```http
+POST /users/login
+Content-Type: application/json
+
+{
+  "username": "john_doe",
+  "password": "securepassword123"
+}
+```
+
+**Response:**
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 1,
+    "username": "john_doe",
+    "email": "john@example.com"
+  }
+}
+```
+
+### User Profile Endpoints
+
+#### Get Current User Profile
+```http
+GET /user
+Authorization: Bearer <access_token>
+```
+
+#### Update User Profile
+```http
+PUT /user
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "email": "newemail@example.com",
+  "bio": "Updated bio information"
+}
+```
+
+## 🔧 Development
+
+### Available Scripts
+
+```bash
+# Development
+npm run start:dev          # Start in watch mode
+npm run start:debug        # Start in debug mode
+
+# Production
+npm run build             # Build the application
+npm run start:prod        # Start production server
+
+# Testing
+npm run test              # Run unit tests
+npm run test:watch        # Run tests in watch mode
+npm run test:cov          # Run tests with coverage
+npm run test:e2e          # Run end-to-end tests
+
+# Code Quality
+npm run lint              # Run ESLint
+npm run format            # Format code with Prettier
+```
+
+### Project Structure
+
+```
+src/
+├── auth/                 # Authentication module
+│   ├── auth.controller.ts
+│   ├── auth.module.ts
+│   ├── auth.service.ts
+│   ├── jwt.strategy.ts
+│   └── user.decorator.ts
+├── entity/              # Database entities
+│   ├── abstract.entity.ts
+│   └── user.entity.ts
+├── models/              # Data transfer objects
+│   └── user.model.ts
+├── users/               # User management module
+│   ├── profile.controller.ts
+│   ├── users.controller.ts
+│   ├── users.module.ts
+│   └── users.service.ts
+├── app.controller.ts    # Main application controller
+├── app.module.ts        # Root module
+├── app.service.ts       # Application service
+├── database.connection.ts # Database configuration
+└── main.ts             # Application entry point
+```
+
+## 🐳 Docker Deployment
+
+### Using Docker Compose
+
+1. **Start the entire stack:**
+```bash
+docker-compose up -d
+```
+
+2. **View logs:**
+```bash
+docker-compose logs -f
+```
+
+3. **Stop the stack:**
+```bash
+docker-compose down
+```
+
+### Database Management
+
+- **Access MySQL container:**
+```bash
+docker exec -it mysql_container mysql -u root -p
+```
+
+- **View database logs:**
+```bash
+docker-compose logs mysql_db
+```
+
+## 🔒 Security Features
+
+- **Password Hashing**: All passwords are hashed using bcrypt
+- **JWT Authentication**: Secure token-based authentication
+- **Input Validation**: All inputs are validated using class-validator
+- **SQL Injection Protection**: TypeORM provides protection against SQL injection
+- **Environment Variables**: Sensitive data stored in environment variables
+
+## 🧪 Testing
+
+The project includes comprehensive testing setup:
+
+```bash
+# Run all tests
+npm run test
+
+# Run tests with coverage
+npm run test:cov
+
+# Run end-to-end tests
+npm run test:e2e
+```
+
+## 📝 Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PORT` | Application port | `4000` |
+| `NODE_ENV` | Environment mode | `development` |
+| `MYSQL_ROOT_PASSWORD` | MySQL root password | - |
+| `MYSQL_DATABASE` | Database name | `blog_api` |
+| `MYSQL_USER` | Database user | `blog_user` |
+| `MYSQL_PASSWORD` | Database password | - |
+| `MYSQL_PORT` | MySQL port | `3306` |
+| `JWT_SECRET` | JWT secret key | - |
+| `JWT_EXPIRES_IN` | JWT expiration time | `24h` |
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [NestJS Documentation](https://docs.nestjs.com/)
+2. Search existing issues in the repository
+3. Create a new issue with detailed information
+
+## 🔗 Useful Links
+
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [TypeORM Documentation](https://typeorm.io/)
+- [JWT.io](https://jwt.io/) - JWT token debugger
+- [Docker Documentation](https://docs.docker.com/)
+
+---
+
+Built with ❤️ using NestJS
