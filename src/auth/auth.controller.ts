@@ -8,6 +8,7 @@ import {
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from 'src/models/user.model';
 
+// Routes for user registration and login
 @Controller('users')
 export class AuthController {
   constructor(private authService: AuthService) {}

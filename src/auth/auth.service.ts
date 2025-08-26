@@ -38,6 +38,7 @@ export class AuthService {
         error?.code,
         error?.errno,
       );
+      throw new InternalServerErrorException('An unexpected error occurred');
     }
   }
 
