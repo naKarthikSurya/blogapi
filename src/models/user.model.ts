@@ -34,7 +34,7 @@ export class UpdateUserDto {
 
   @IsOptional()
   bio: string;
-  
+
   @IsOptional()
   image: string;
 }

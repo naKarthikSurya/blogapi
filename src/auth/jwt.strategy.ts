@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       // Expect standard Bearer token: Authorization: Bearer <token>
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Token'),
       secretOrKey: configService.get<string>('SECRET'),
     });
   }

@@ -25,15 +25,7 @@ export class UserService {
       where: { username },
       relations: ['followers'],
     });
-    if (!user) {
-      return null;
-    }
-    const alreadyFollowing = user.followers.some(
-      (follower) => follower.id === currentUser.id,
-    );
-    if (!alreadyFollowing) {
-      user.followers.push(currentUser);
-    }
+    user.followers.push(currentUser);
     await user.save();
     return user.toProfile(currentUser);
   }
@@ -43,11 +35,8 @@ export class UserService {
       where: { username },
       relations: ['followers'],
     });
-    if (!user) {
-      return null;
-    }
     user.followers = user.followers.filter(
-      (follower) => follower.id !== currentUser.id,
+      (follower) => follower !== currentUser,
     );
     await user.save();
     return user.toProfile(currentUser);
